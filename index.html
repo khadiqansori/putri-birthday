@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Selamat Ulang Tahun, Rahma Danti Julia Putri!</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        rose: { 50:'#fff1f2',100:'#ffe4e6',200:'#fecdd3',300:'#fda4af',400:'#fb7185',500:'#f43f5e',600:'#e11d48',700:'#be123c',800:'#9f1239',900:'#881337' },
+        blush: { 50:'#fef2f4',100:'#fde6ea',200:'#fbd0d9',300:'#f7a8b8',400:'#f27a97',500:'#e84d74',600:'#d42a5a',700:'#b31e48',800:'#951c40',900:'#7f1b3b' },
+        cream: '#fff8f6',
+        warm: '#fef5f0'
+      },
+      fontFamily: {
+        display: ['"Playfair Display"','serif'],
+        body: ['"Inter"','sans-serif']
+      }
+    }
+  }
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+::selection{background:#fbd0d9;color:#7f1b3b}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:#fff8f6;overflow-x:hidden}
+
+/* --- shader bg --- */
+#bg-canvas{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+
+/* scroll lock until reveal */
+body.locked{overflow:hidden;height:100vh}
+#hero{height:100vh;height:100dvh;position:relative;z-index:50}
+#main-content{position:relative;z-index:10}
+
+/* --- particles --- */
+.particle{position:fixed;pointer-events:none;z-index:1;will-change:transform}
+@keyframes pFloat{0%{transform:translateY(105vh) rotate(0) scale(var(--s));opacity:0}8%{opacity:var(--o)}88%{opacity:var(--o)}100%{transform:translateY(-8vh) rotate(var(--r)) scale(var(--s));opacity:0}}
+
+/* --- reveal --- */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.12s}.d2{transition-delay:.24s}.d3{transition-delay:.36s}.d4{transition-delay:.48s}.d5{transition-delay:.60s}
+
+/* --- glass --- */
+.glass{background:rgba(251,208,217,.25);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border:1px solid rgba(255,255,255,.4)}
+
+/* --- hero entrance --- */
+@keyframes heroIn{0%{opacity:0;transform:translateY(50px) scale(.95)}100%{opacity:1;transform:translateY(0) scale(1)}}
+.hero-enter{animation:heroIn 1.1s cubic-bezier(.22,1,.36,1) forwards;opacity:0}
+.hd1{animation-delay:.2s}.hd2{animation-delay:.45s}.hd3{animation-delay:.7s}.hd4{animation-delay:.95s}
+
+/* --- photo cards --- */
+.photo-card{overflow:hidden;border-radius:1rem;position:relative;cursor:pointer}
+.photo-card img{width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.22,1,.36,1)}
+.photo-card:hover img{transform:scale(1.06)}
+.photo-card::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.45),transparent 50%);opacity:0;transition:opacity .4s ease;pointer-events:none}
+.photo-card:hover::after{opacity:1}
+
+/* --- letter shimmer --- */
+@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+.shimmer{background:linear-gradient(90deg,#951c40 35%,#f7a8b8 50%,#951c40 65%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 5s linear infinite}
+
+/* --- scroll indicator --- */
+@keyframes scrollBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+
+/* --- confetti --- */
+.confetti-bit{position:fixed;pointer-events:none;z-index:999}
+
+/* --- scrollbar --- */
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#fbd0d9;border-radius:99px}
+
+/* --- candle blow --- */
+.candle{transition:opacity .6s ease,transform .6s ease}
+
+/* --- counter digits --- */
+@keyframes countPulse{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
+.count-pulse{animation:countPulse .4s ease}
+</style>
+</head>
+<body class="locked">
+
+<!-- Shader BG -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- Particles -->
+<div id="particles"></div>
+
+<!-- 3D Hearts -->
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<script>
+(function(){
+  const s=new THREE.Scene(),w=innerWidth,h=innerHeight;
+  const c=new THREE.PerspectiveCamera(75,w/h,.1,1000);
+  const r=new THREE.WebGLRenderer({alpha:true,antialias:true});
+  r.setSize(w,h);r.setPixelRatio(Math.min(devicePixelRatio,2));
+  r.domElement.style.cssText='position:fixed;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;opacity:.45';
+  document.body.prepend(r.domElement);
+  const hs=new THREE.Shape();
+  hs.moveTo(0,0);hs.bezierCurveTo(0,-.3,-.6,-.3,-.6,0);hs.bezierCurveTo(-.6,.6,0,1.1,0,1.5);hs.bezierCurveTo(0,1.1,.6,.6,.6,0);hs.bezierCurveTo(.6,-.3,0,-.3,0,0);
+  const geo=new THREE.ExtrudeGeometry(hs,{depth:.2,bevelEnabled:true,bevelSegments:2,steps:2,bevelSize:.1,bevelThickness:.1});
+  const mat=new THREE.MeshPhongMaterial({color:0xe84d74,shininess:120,transparent:true,opacity:.6});
+  const hearts=[];
+  for(let i=0;i<5;i++){const m=new THREE.Mesh(geo,mat.clone());m.position.set((Math.random()-.5)*5,(Math.random()-.5)*5,(Math.random()-.5)*3);m.rotation.x=Math.PI;m.scale.setScalar(.3+Math.random()*.25);m.material.opacity=.25+Math.random()*.35;s.add(m);hearts.push({m,rs:.008+Math.random()*.012,oy:m.position.y,spd:.6+Math.random()*.8})}
+  s.add(new THREE.DirectionalLight(0xffffff,.8).translateX(1).translateY(1).translateZ(2));
+  s.add(new THREE.AmbientLight(0xffffff,.5));
+  c.position.z=5;
+  (function f(t){requestAnimationFrame(f);hearts.forEach(h=>{h.m.rotation.y+=h.rs;h.m.position.y=h.oy+Math.sin(t*.001*h.spd)*.35});r.render(s,c)})(0);
+  addEventListener('resize',()=>{const w=innerWidth,h=innerHeight;c.aspect=w/h;c.updateProjectionMatrix();r.setSize(w,h)});
+})();
+</script>
+
+<!-- ============================================ -->
+<!-- HERO -->
+<!-- ============================================ -->
+<section id="hero" class="relative z-10 min-h-screen flex flex-col items-center justify-center text-center px-6 py-20">
+  <div class="hero-enter hd1 mb-6">
+    <div class="w-20 h-20 rounded-full bg-gradient-to-br from-blush-200 to-rose-300 flex items-center justify-center shadow-lg shadow-rose-200/50">
+      <span class="material-symbols-outlined text-white text-4xl" style="font-variation-settings:'FILL'1">cake</span>
+    </div>
+  </div>
+  <p class="font-body text-sm tracking-[.3em] uppercase text-blush-500 mb-4 hero-enter hd1">Selamat Ulang Tahun</p>
+  <h1 class="font-display text-[clamp(2.2rem,6vw,4rem)] leading-[1.1] font-bold text-blush-800 max-w-2xl hero-enter hd2">
+    Rahma Danti<br>Julia Putri
+  </h1>
+  <p class="font-body text-lg text-blush-600/80 max-w-lg mt-6 leading-relaxed hero-enter hd3">
+    Hari ini adalah tentangmu. Sebuah perayaan untuk jiwa paling indah yang pernah kutemui.
+  </p>
+  <div class="mt-10 hero-enter hd4">
+    <button onclick="revealContent()" class="group inline-flex items-center gap-3 bg-gradient-to-r from-blush-500 to-rose-500 text-white px-8 py-3.5 rounded-full font-semibold text-sm shadow-lg shadow-rose-300/40 hover:shadow-xl hover:shadow-rose-300/60 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer">
+      Lihat Kejutanku
+      <span class="material-symbols-outlined text-lg group-hover:translate-y-0.5 transition-transform">arrow_downward</span>
+    </button>
+  </div>
+  <div class="absolute bottom-8" style="animation:scrollBounce 2s ease infinite">
+    <span class="material-symbols-outlined text-blush-300 text-3xl">expand_more</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- CONTENT (hidden until reveal) -->
+<!-- ============================================ -->
+<div id="main-content" class="opacity-0" style="transition:opacity .8s ease">
+
+<!-- COUNTER -->
+<!-- ============================================ -->
+<section class="relative z-10 max-w-3xl mx-auto px-6 -mt-8 mb-20">
+  <div class="glass rounded-2xl p-8 flex flex-wrap justify-center gap-8 md:gap-16 reveal">
+    <div class="text-center">
+      <div class="font-display text-4xl md:text-5xl font-bold text-blush-700" id="counter-years">0</div>
+      <p class="text-xs tracking-widest uppercase text-blush-400 mt-1">Tahun</p>
+    </div>
+    <div class="text-center">
+      <div class="font-display text-4xl md:text-5xl font-bold text-blush-700" id="counter-months">0</div>
+      <p class="text-xs tracking-widest uppercase text-blush-400 mt-1">Bulan Bersamamu</p>
+    </div>
+    <div class="text-center">
+      <div class="font-display text-4xl md:text-5xl font-bold text-blush-700" id="counter-photos">0</div>
+      <p class="text-xs tracking-widest uppercase text-blush-400 mt-1">Kenangan</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- GALLERY -->
+<!-- ============================================ -->
+<section id="gallery" class="relative z-10 max-w-6xl mx-auto px-4 md:px-6 mb-24">
+  <div class="text-center mb-12 reveal">
+    <span class="material-symbols-outlined text-blush-400 text-4xl mb-2" style="font-variation-settings:'FILL'1">photo_library</span>
+    <h2 class="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-semibold text-blush-800">Kenangan Kita</h2>
+    <div class="w-16 h-1 bg-gradient-to-r from-blush-300 to-rose-400 mx-auto rounded-full mt-3"></div>
+  </div>
+
+  <!-- Row 1: 1 large + 2 stacked -->
+  <div class="grid grid-cols-2 md:grid-cols-12 gap-3 md:gap-4 mb-3 md:mb-4">
+    <div class="col-span-2 md:col-span-7 photo-card shadow-xl reveal d1" style="aspect-ratio:4/3">
+      <img src="photos/IMG_1032.jpg" alt="Kenangan" loading="lazy"/>
+    </div>
+    <div class="col-span-1 md:col-span-5 grid grid-rows-2 gap-3 md:gap-4">
+      <div class="photo-card shadow-lg reveal d2" style="aspect-ratio:16/10">
+        <img src="photos/IMG_1049.jpg" alt="Kenangan" loading="lazy"/>
+      </div>
+      <div class="photo-card shadow-lg reveal d2" style="aspect-ratio:16/10">
+        <img src="photos/IMG_1073.jpg" alt="Kenangan" loading="lazy"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 2: 3 equal -->
+  <div class="grid grid-cols-3 gap-3 md:gap-4 mb-3 md:mb-4">
+    <div class="photo-card shadow-lg reveal d2" style="aspect-ratio:3/4">
+      <img src="photos/IMG_1211.jpg" alt="Kenangan" loading="lazy"/>
+    </div>
+    <div class="photo-card shadow-lg reveal d3" style="aspect-ratio:3/4">
+      <img src="photos/IMG_1457.jpg" alt="Kenangan" loading="lazy"/>
+    </div>
+    <div class="photo-card shadow-lg reveal d3" style="aspect-ratio:3/4">
+      <img src="photos/IMG_2443.jpg" alt="Kenangan" loading="lazy"/>
+    </div>
+  </div>
+
+  <!-- Row 3: 2 equal -->
+  <div class="grid grid-cols-2 gap-3 md:gap-4 mb-3 md:mb-4">
+    <div class="photo-card shadow-lg reveal d3" style="aspect-ratio:4/3">
+      <img src="photos/IMG_2523.jpg" alt="Kenangan" loading="lazy"/>
+    </div>
+    <div class="photo-card shadow-lg reveal d4" style="aspect-ratio:4/3">
+      <img src="photos/IMG_3351.jpg" alt="Kenangan" loading="lazy"/>
+    </div>
+  </div>
+
+  <!-- Row 4: 1 tall + 1 wide -->
+  <div class="grid grid-cols-2 md:grid-cols-12 gap-3 md:gap-4 mb-3 md:mb-4">
+    <div class="col-span-1 md:col-span-5 photo-card shadow-lg reveal d4" style="aspect-ratio:3/4">
+      <img src="photos/IMG_3381.jpg" alt="Kenangan" loading="lazy"/>
+    </div>
+    <div class="col-span-1 md:col-span-7 grid grid-rows-2 gap-3 md:gap-4">
+      <div class="photo-card shadow-xl reveal d4" style="aspect-ratio:16/9">
+        <img src="photos/IMG_3424.jpg" alt="Kenangan" loading="lazy"/>
+      </div>
+      <div class="photo-card shadow-xl reveal d5" style="aspect-ratio:16/9">
+        <img src="photos/IMG_3472.jpg" alt="Kenangan" loading="lazy"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- LETTER -->
+<!-- ============================================ -->
+<section id="letter" class="relative z-10 max-w-3xl mx-auto px-6 mb-24">
+  <div class="glass rounded-2xl shadow-2xl p-8 md:p-14 reveal">
+    <div class="text-center mb-8">
+      <span class="material-symbols-outlined text-blush-500 text-5xl mb-3" style="font-variation-settings:'FILL'1">auto_stories</span>
+      <h2 class="font-display text-[clamp(1.5rem,3.5vw,2.2rem)] font-semibold text-blush-700">Surat Kecil dari Hatiku</h2>
+    </div>
+    <div class="font-body text-lg text-blush-700/70 space-y-6 leading-relaxed italic text-center md:text-left">
+      <p class="shimmer not-italic font-semibold text-xl">"Untuk Putri, kekasihku yang luar biasa,"</p>
+      <p>Selamat Ulang tahun, Sayang ku. Terima kasih sudah menjadi alasan di balik semangat ku, senyum ku dan selalu jadi tempat ternyaman untuk pulang. Di usiamu yang 25 tahun ini, aku berharap kamu selalu bahagia, sehat dan tergapai segala impian mu, I love you so much more than words can say, today and forever.</p>
+      <p class="pt-4 text-blush-700 font-bold text-right not-italic">
+        Selamanya milikmu,<br/>
+        <span class="text-lg">Aku 💗</span>
+      </p>
+    </div>
+    <div class="mt-10 flex justify-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-blush-500"></span>
+      <span class="w-2 h-2 rounded-full bg-blush-300"></span>
+      <span class="w-2 h-2 rounded-full bg-blush-200"></span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- WISH -->
+<!-- ============================================ -->
+<section id="wish" class="relative z-10 max-w-xl mx-auto px-6 pb-24 text-center">
+  <div class="reveal">
+    <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blush-200 to-rose-300 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-rose-200/40">
+      <span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings:'FILL'1">celebration</span>
+    </div>
+    <h2 class="font-display text-[clamp(1.6rem,3.5vw,2.4rem)] font-semibold text-blush-800 mb-3">Make a Wish</h2>
+    <p class="text-blush-500 mb-8">Tiup lilinnya dan buat harapanmu 🎂</p>
+
+    <div class="relative inline-block mb-8">
+      <div class="text-8xl md:text-9xl select-none" id="cake">🎂</div>
+      <div id="candles" class="absolute -top-3 left-1/2 -translate-x-1/2 flex gap-3">
+        <div class="candle text-2xl">🕯️</div>
+        <div class="candle text-3xl -mt-2">🕯️</div>
+        <div class="candle text-2xl">🕯️</div>
+      </div>
+    </div>
+
+    <div>
+      <button id="blow-btn" onclick="blowCandles()" class="bg-gradient-to-r from-blush-500 to-rose-500 text-white px-10 py-4 rounded-full font-semibold shadow-lg shadow-rose-300/40 hover:shadow-xl hover:shadow-rose-300/60 hover:scale-105 active:scale-95 transition-all duration-300 text-lg">
+        Tiup Lilin 🌬️
+      </button>
+    </div>
+
+    <div id="wish-msg" class="hidden mt-10">
+      <p class="font-display text-2xl md:text-3xl text-blush-700 mb-3">✨ Semoga harapanmu terkabul! ✨</p>
+      <p class="text-blush-600/80 text-lg leading-relaxed max-w-md mx-auto">Selamat ulang tahun, manusia paling menyebalkan sekaligus paling aku sayang! 💖</p>
+      <p class="font-display text-xl md:text-2xl text-blush-700 mt-10 opacity-0 leading-relaxed" id="love-text">With all my love,<br>Forever & Always</p>
+    </div>
+  </div>
+</section>
+
+</div><!-- end main-content -->
+
+<!-- ============================================ -->
+<!-- ============================================ -->
+<script>
+// Reveal content on button click
+function revealContent(){
+  document.body.classList.remove('locked');
+  const mc=document.getElementById('main-content');
+  mc.style.opacity='1';
+  // Hide scroll indicator
+  const si=document.querySelector('#hero .absolute.bottom-8');
+  if(si)si.style.display='none';
+  // Smooth scroll to gallery after a short delay
+  setTimeout(()=>{document.getElementById('gallery').scrollIntoView({behavior:'smooth'})},300);
+}
+
+// Particles
+(function(){
+  const box=document.getElementById('particles');
+  const icons=['❤️','💗','💕','💖','🌸','✨','🤍'];
+  for(let i=0;i<18;i++){
+    const d=document.createElement('div');d.className='particle';d.textContent=icons[i%icons.length];
+    const s=.4+Math.random()*.6;
+    d.style.setProperty('--s',s);d.style.setProperty('--o',.2+Math.random()*.4);d.style.setProperty('--r',(Math.random()*720-360)+'deg');
+    d.style.cssText+=`left:${Math.random()*100}vw;font-size:${10+Math.random()*14}px;animation:pFloat ${8+Math.random()*12}s linear infinite;animation-delay:${-Math.random()*14}s;`;
+    box.appendChild(d);
+  }
+})();
+
+// Scroll reveal
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// Animated counters
+function animateCounter(el,target,suffix='',duration=1800){
+  let start=0;const step=Math.ceil(target/(duration/16));
+  const iv=setInterval(()=>{start+=step;if(start>=target){start=target;clearInterval(iv)};el.textContent=start+suffix;el.classList.add('count-pulse');setTimeout(()=>el.classList.remove('count-pulse'),400)},16);
+}
+const counterObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){
+  animateCounter(document.getElementById('counter-years'),25);
+  animateCounter(document.getElementById('counter-months'),11,'+');
+  animateCounter(document.getElementById('counter-photos'),1000,'+');
+  counterObs.unobserve(e.target);
+}})},{threshold:.3});
+document.querySelectorAll('.reveal').forEach(el=>{if(el.querySelector('#counter-years'))counterObs.observe(el)});
+
+// Blow candles
+function blowCandles(){
+  document.querySelectorAll('.candle').forEach((c,i)=>{
+    setTimeout(()=>{c.style.opacity='0';c.style.transform='translateY(-20px) scale(.4)'},i*200);
+  });
+  setTimeout(()=>{
+    document.getElementById('wish-msg').classList.remove('hidden');
+    document.getElementById('blow-btn').textContent='✨ Happy Birthday! ✨';
+    document.getElementById('blow-btn').disabled=true;
+    document.getElementById('blow-btn').classList.add('opacity-60','cursor-default');
+    confetti();
+    setTimeout(()=>{const lt=document.getElementById('love-text');lt.style.transition='opacity 2s ease';lt.style.opacity='1'},1500);
+  },700);
+}
+
+// Confetti
+function confetti(){
+  const colors=['#e84d74','#f27a97','#f7a8b8','#fbd0d9','#fff','#fde6ea','#be123c'];
+  for(let i=0;i<100;i++){
+    const d=document.createElement('div');d.className='confetti-bit';
+    const sz=4+Math.random()*10;
+    d.style.cssText=`width:${sz}px;height:${sz*.6}px;background:${colors[Math.random()*colors.length|0]};border-radius:${Math.random()>.5?'50%':'1px'};left:50%;top:45%`;
+    const dx=(Math.random()-.5)*800,dy=(Math.random()-.65)*-700,rot=Math.random()*900,dur=1.2+Math.random()*1.2;
+    d.animate([{transform:'translate(0,0) rotate(0)',opacity:1},{transform:`translate(${dx}px,${dy}px) rotate(${rot}deg)`,opacity:0}],{duration:dur*1000,easing:'cubic-bezier(.25,.46,.45,.94)',fill:'forwards'});
+    document.body.appendChild(d);setTimeout(()=>d.remove(),dur*1000+100);
+  }
+}
+
+// Shader BG
+(function(){
+  const cv=document.getElementById('bg-canvas');
+  function sz(){cv.width=cv.clientWidth||1280;cv.height=cv.clientHeight||720}
+  if(typeof ResizeObserver!=='undefined')new ResizeObserver(sz).observe(cv);sz();
+  const gl=cv.getContext('webgl');if(!gl)return;
+  const vs=`attribute vec2 p;varying vec2 v;void main(){v=p*.5+.5;gl_Position=vec4(p,0,1);}`;
+  const fs=`precision highp float;varying vec2 v;uniform float t;
+void main(){vec2 u=v;
+vec3 a=vec3(1,.94,.95),b=vec3(1,.97,.98);
+float w1=sin(u.x*3.+t*.4)*.5+.5,w2=sin(u.y*2.5-t*.3)*.5+.5;
+vec3 c=mix(a,b,w1*w2);
+float sp=pow(sin(u.x*18.+t)*cos(u.y*18.-t),22.);
+c+=sp*.1;gl_FragColor=vec4(c,1);}`;
+  function cs(t,s){const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);return o}
+  const p=gl.createProgram();gl.attachShader(p,cs(gl.VERTEX_SHADER,vs));gl.attachShader(p,cs(gl.FRAGMENT_SHADER,fs));gl.linkProgram(p);gl.useProgram(p);
+  const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  const a=gl.getAttribLocation(p,'p');gl.enableVertexAttribArray(a);gl.vertexAttribPointer(a,2,gl.FLOAT,false,0,0);
+  const uT=gl.getUniformLocation(p,'t');
+  (function f(t){if(typeof ResizeObserver==='undefined')sz();gl.viewport(0,0,cv.width,cv.height);gl.uniform1f(uT,t*.001);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);requestAnimationFrame(f)})(0);
+})();
+</script>
+</body>
+</html>
