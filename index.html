@@ -295,6 +295,10 @@ body.locked{overflow:hidden;height:100vh}
 <!-- ============================================ -->
 <!-- ============================================ -->
 <script>
+// Force scroll to top on load (fixes refresh bug)
+if('scrollRestoration' in history) history.scrollRestoration='manual';
+window.scrollTo(0,0);
+
 // Reveal content on button click
 function revealContent(){
   document.body.classList.remove('locked');
