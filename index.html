@@ -86,6 +86,17 @@ body.locked{overflow:hidden;height:100vh}
 </head>
 <body class="locked">
 
+<!-- Audio -->
+<audio id="bg-music" loop preload="auto">
+  <source src="music/perfect.mp3" type="audio/mpeg"/>
+</audio>
+
+<!-- Music toggle (sticky top-right) -->
+<button id="music-btn" onclick="toggleMusic()" class="fixed top-4 right-4 z-[999] hidden w-10 h-10 rounded-full bg-white/80 backdrop-blur-md shadow-lg border border-blush-200 flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-200 cursor-pointer" title="Toggle musik">
+  <span id="music-icon-on" class="material-symbols-outlined text-blush-600 text-xl" style="font-variation-settings:'FILL'1">music_note</span>
+  <span id="music-icon-off" class="material-symbols-outlined text-blush-400 text-xl hidden">music_off</span>
+</button>
+
 <!-- Shader BG -->
 <canvas id="bg-canvas"></canvas>
 
@@ -307,8 +318,25 @@ function revealContent(){
   // Hide scroll indicator
   const si=document.querySelector('#hero .absolute.bottom-8');
   if(si)si.style.display='none';
+  // Show music toggle
+  document.getElementById('music-btn').classList.remove('hidden');
+  // Play music
+  const audio=document.getElementById('bg-music');
+  audio.play().catch(()=>{});
+  musicPlaying=true;
   // Smooth scroll to gallery after a short delay
   setTimeout(()=>{document.getElementById('gallery').scrollIntoView({behavior:'smooth'})},300);
+}
+
+// Music toggle
+let musicPlaying=false;
+function toggleMusic(){
+  const audio=document.getElementById('bg-music');
+  const iconOn=document.getElementById('music-icon-on');
+  const iconOff=document.getElementById('music-icon-off');
+  if(musicPlaying){audio.pause();iconOn.classList.add('hidden');iconOff.classList.remove('hidden')}
+  else{audio.play().catch(()=>{});iconOn.classList.remove('hidden');iconOff.classList.add('hidden')}
+  musicPlaying=!musicPlaying;
 }
 
 // Particles
